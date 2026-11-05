@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Gửi cậu</title>
+<title>Gửi Phương</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
@@ -11,6 +11,7 @@
 :root{
   --bg:#fbf1f4; --bg2:#f4dfe8; --ink:#2b1b3d; --soft:#6d5a7d; --rose:#c93c68; --rose-ink:#fff;
   --peach:#f6b08c; --card:#ffffff; --line:#e6c9d6; --glow:rgba(201,60,104,.14);
+  --env-b:#efb9cb; --env-f:#fadbe5; --env-fl:#e8a3ba;
   box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme:dark){
@@ -18,21 +19,23 @@
     color-scheme:dark;
     --bg:#1a1124; --bg2:#271838; --ink:#f8e9ef; --soft:#c3a9cf; --rose:#ef7a9c; --rose-ink:#2b1030;
     --peach:#f2a27c; --card:#2a1a3a; --line:#4a3160; --glow:rgba(239,122,156,.18);
+    --env-b:#4a2a5c; --env-f:#6a3f84; --env-fl:#7d4b99;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#1a1124; --bg2:#271838; --ink:#f8e9ef; --soft:#c3a9cf; --rose:#ef7a9c; --rose-ink:#2b1030;
   --peach:#f2a27c; --card:#2a1a3a; --line:#4a3160; --glow:rgba(239,122,156,.18);
+    --env-b:#4a2a5c; --env-f:#6a3f84; --env-fl:#7d4b99;
 }
 html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:border-box}
 body{
-  margin:0; color:var(--ink); background:var(--bg);
+  overflow-x:clip; margin:0; color:var(--ink); background:var(--bg);
   background-image:radial-gradient(900px 500px at 50% -10%,var(--glow),transparent 70%);
   font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.7; font-size:17px;
 }
-main{max-width:640px;margin:0 auto;padding:0 22px 80px}
+main{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:0 22px 80px}
 section{padding:56px 0 8px}
 h1,h2{font-family:"Playfair Display",Georgia,"Times New Roman",serif;line-height:1.2;margin:0 0 14px;font-weight:700}
 h1{font-size:clamp(2.4rem,9vw,3.6rem);font-weight:500;font-style:italic}
@@ -43,21 +46,24 @@ button{font:inherit;cursor:pointer;color:inherit}
 :focus-visible{outline:3px solid var(--rose);outline-offset:3px}
 
 .hero{min-height:88vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-top:40px}
-.env{
-  margin-top:34px;width:230px;height:150px;position:relative;border:0;background:none;padding:0;
-}
-.env .body{position:absolute;inset:0;background:var(--card);border:1.5px solid var(--line);border-radius:6px;box-shadow:0 14px 30px var(--glow)}
-.env .flap{
-  position:absolute;left:0;right:0;top:0;height:78px;transform-origin:top;transition:transform .7s ease;
-  background:var(--bg2);border:1.5px solid var(--line);border-radius:6px 6px 0 0;
-  clip-path:polygon(0 0,100% 0,50% 100%);
-}
-.env .seal{
-  position:absolute;left:50%;top:62px;width:34px;height:34px;margin-left:-17px;border-radius:50%;
-  background:var(--rose);color:var(--rose-ink);display:grid;place-items:center;font-size:16px;z-index:2;transition:opacity .4s;
-}
-.env.open .flap{transform:rotateX(180deg)}
-.env.open .seal{opacity:0}
+.stage{position:relative;width:280px;height:190px;margin-top:40px}
+.env{position:absolute;inset:0;border:0;background:none;padding:0;filter:drop-shadow(0 18px 24px var(--glow))}
+.env .back{position:absolute;inset:0;background:var(--env-b);border-radius:8px;z-index:1}
+.env .note{position:absolute;left:9%;right:9%;top:18px;height:150px;background:var(--card);border-radius:5px;z-index:2;transition:transform .9s cubic-bezier(.3,.8,.3,1) .35s}
+.env .note::before{content:"";position:absolute;inset:20px 20px auto;height:64px;background:repeating-linear-gradient(transparent 0 15px,var(--line) 15px 16px)}
+.env .front{position:absolute;inset:0;background:linear-gradient(160deg,var(--env-f),var(--env-b));clip-path:polygon(0 0,50% 54%,100% 0,100% 100%,0 100%);border-radius:8px;z-index:3}
+.env .to{position:absolute;left:0;right:0;bottom:26px;text-align:center;z-index:4;font-family:"Playfair Display",Georgia,serif;font-style:italic;font-size:1.3rem;color:var(--ink)}
+.env .flap{position:absolute;left:0;right:0;top:0;height:103px;transform-origin:top;transition:transform .7s ease;background:linear-gradient(180deg,var(--env-fl),var(--env-b));clip-path:polygon(0 0,100% 0,50% 100%);border-radius:8px 8px 0 0;z-index:5}
+.env .seal{position:absolute;left:50%;top:82px;width:40px;height:40px;margin-left:-20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--peach),var(--rose) 70%);color:var(--rose-ink);display:grid;place-items:center;font-size:18px;z-index:6;box-shadow:0 3px 8px rgba(0,0,0,.25);animation:beat 1.6s ease-in-out infinite;transition:opacity .4s}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.14)}30%{transform:scale(1)}45%{transform:scale(1.1)}}
+.env.open .flap{transform:rotateX(180deg);z-index:0}
+.env.open .seal{opacity:0;animation:none}
+.env.open .note{transform:translateY(-88px)}
+.hearts{position:fixed;left:50%;top:50%;width:0;height:0;pointer-events:none;z-index:0}
+.rp{position:absolute;left:-50px;top:-45px;width:100px;height:90px;opacity:0;animation:grow var(--t,7s) cubic-bezier(.25,.1,.5,1) forwards}
+.rp svg{display:block;width:100%;height:100%;overflow:visible}
+.rp path{fill:var(--c);fill-opacity:.05;stroke:var(--c);stroke-width:1.5;vector-effect:non-scaling-stroke}
+@keyframes grow{0%{transform:scale(.15);opacity:0}8%{opacity:var(--o,.5)}100%{transform:scale(var(--s,12));opacity:0}}
 .hint{margin-top:18px;font-size:.95rem}
 
 #letter{display:none}
@@ -74,14 +80,6 @@ button{font:inherit;cursor:pointer;color:inherit}
 #letter.show .paper p:nth-child(4){animation-delay:1.05s}
 #letter.show .paper p:nth-child(5){animation-delay:1.4s}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-.group{margin:20px 0}
-.group b{display:block;margin-bottom:8px;font-weight:600}
-.chips{display:flex;flex-wrap:wrap;gap:10px}
-.chip{
-  border:1.5px solid var(--line);background:var(--card);padding:9px 16px;border-radius:999px;
-}
-.chip[aria-pressed="true"]{background:var(--rose);border-color:var(--rose);color:var(--rose-ink);font-weight:500}
 
 .deck{
   margin-top:10px;background:var(--card);border:1.5px dashed var(--line);border-radius:8px;
@@ -105,60 +103,35 @@ textarea{
 footer{text-align:center;padding:30px 0 0;color:var(--soft);font-size:.9rem}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .env .flap,.env .seal{transition:none}
+  .env .flap,.env .seal,.env .note{transition:none}
+  .env .seal{animation:none}
   #letter.show .paper p{animation:none}
 }
 </style>
 </head>
 <body>
+<div class="hearts" id="hearts" aria-hidden="true"></div>
 <main>
   <header class="hero">
-    <h1>Gửi cậu</h1>
+    <h1>Gửi Phương</h1>
     <p class="muted">Một lá thư nhỏ trước buổi gặp đầu tiên của mình.</p>
-    <button class="env" id="env" aria-label="Mở thư" aria-expanded="false">
-      <span class="body"></span><span class="flap"></span><span class="seal" aria-hidden="true">♥</span>
-    </button>
+    <div class="stage">
+      <button class="env" id="env" aria-label="Mở thư gửi Phương" aria-expanded="false">
+        <span class="back"></span><span class="note"></span><span class="front"></span>
+        <span class="to">Gửi Phương</span><span class="flap"></span><span class="seal" aria-hidden="true">♥</span>
+      </button>
+    </div>
     <p class="hint muted" id="hint">Chạm vào phong thư để mở</p>
   </header>
 
   <section id="letter" aria-label="Lá thư">
     <div class="paper">
-      <p>Cậu à,</p>
+      <p>Phương à,</p>
       <p>Mình làm trang này vì có vài điều nói trực tiếp thì mình sẽ lúng túng. Nên mình viết ra trước, để cậu đọc lúc nào thấy thoải mái.</p>
       <p>Mình thích cậu. Thích cách cậu kể chuyện, thích những lúc cậu thoải mái chia sẻ với tớ. Mình không muốn đợi đến khi mọi thứ hoàn hảo mới nói.</p>
       <p>Buổi gặp đầu tiên không cần là gì to tát. Một bộ phim và một vài phút giây tâm sự với nhau là đủ rồi. Nếu giữa chừng cậu thấy không thoải mái, cứ nói, mình sẽ hiểu.</p>
       <p>Dù câu trả lời của cậu là gì, mình cũng cảm ơn vì đã đọc đến đây. Tớ chỉ muốn nói là "Mình thích cậu".</p>
       <p class="sig">Haulee</p>
-    </div>
-  </section>
-
-  <section id="plan" aria-label="Chọn cho buổi gặp">
-    <h2>Mình gặp nhau thế nào cho dễ chịu?</h2>
-    <p class="muted">Chọn những gì cậu thấy ổn. Không có đáp án sai.</p>
-    <div class="group" data-key="drink">
-      <b>Cậu muốn uống gì?</b>
-      <div class="chips">
-        <button class="chip" aria-pressed="false">Cà phê</button>
-        <button class="chip" aria-pressed="false">Trà</button>
-        <button class="chip" aria-pressed="false">Nước ép</button>
-        <button class="chip" aria-pressed="false">Trà sữa</button>
-      </div>
-    </div>
-    <div class="group" data-key="vibe">
-      <b>Không khí nào hợp với cậu?</b>
-      <div class="chips">
-        <button class="chip" aria-pressed="false">Quán yên tĩnh</button>
-        <button class="chip" aria-pressed="false">Đi dạo ngoài trời</button>
-        <button class="chip" aria-pressed="false">Quán có nhạc nhẹ</button>
-      </div>
-    </div>
-    <div class="group" data-key="time">
-      <b>Khung giờ nào tiện?</b>
-      <div class="chips">
-        <button class="chip" aria-pressed="false">Chiều cuối tuần</button>
-        <button class="chip" aria-pressed="false">Tối cuối tuần</button>
-        <button class="chip" aria-pressed="false">Buổi tối trong tuần</button>
-      </div>
     </div>
   </section>
 
@@ -171,7 +144,7 @@ footer{text-align:center;padding:30px 0 0;color:var(--soft);font-size:.9rem}
 
   <section id="answer" aria-label="Trả lời">
     <h2>Cậu muốn gặp mình chứ?</h2>
-    <p class="muted">Cậu chọn xong thì mình sẽ có một tin nhắn sẵn để cậu gửi lại.</p>
+    <p class="muted">Bấm một nút, mình sẽ có sẵn tin nhắn để cậu gửi lại.</p>
     <button class="btn" id="yes">Mình muốn gặp</button>
     <button class="btn ghost" id="wait">Cho mình thêm thời gian</button>
 
@@ -183,7 +156,7 @@ footer{text-align:center;padding:30px 0 0;color:var(--soft);font-size:.9rem}
     </div>
     <div id="kind" role="status">
       <p>Không sao cả. Cậu cứ thong thả, mình không vội.</p>
-      <p style="margin:0">Khi nào cậu sẵn sàng, quay lại đây và chọn lại nhé.</p>
+      <p style="margin:0">Khi nào cậu sẵn sàng, quay lại đây nhé.</p>
     </div>
   </section>
 
@@ -193,20 +166,30 @@ footer{text-align:center;padding:30px 0 0;color:var(--soft);font-size:.9rem}
 <script>
 (function(){
   var env=document.getElementById('env'),letter=document.getElementById('letter'),hint=document.getElementById('hint');
-  env.addEventListener('click',function(){
-    env.classList.add('open');env.setAttribute('aria-expanded','true');
-    letter.classList.add('show');hint.textContent='Kéo xuống để đọc tiếp';
-    setTimeout(function(){letter.scrollIntoView({behavior:'smooth',block:'start'});},450);
-  });
+  var hearts=document.getElementById('hearts'),
+      reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      path='M50 85C10 55 0 30 15 15C30 2 45 10 50 22C55 10 70 2 85 15C100 30 90 55 50 85Z',
+      flip=false;
+  function ripple(o,t){
+    if(reduce)return;
+    var el=document.createElement('div'),sc=Math.max(window.innerWidth,window.innerHeight)/100*1.5;
+    el.className='rp';flip=!flip;
+    el.style.setProperty('--c',flip?'var(--rose)':'var(--peach)');
+    el.style.setProperty('--o',o);el.style.setProperty('--t',t+'s');el.style.setProperty('--s',sc);
+    el.innerHTML='<svg viewBox="0 0 100 90" aria-hidden="true"><path d="'+path+'"/></svg>';
+    el.addEventListener('animationend',function(){el.remove();});
+    hearts.appendChild(el);
+  }
+  function bloom(){for(var i=0;i<4;i++)(function(k){setTimeout(function(){ripple(.8,5);},k*300);})(i);}
+  setInterval(function(){if(!document.hidden)ripple(.45,7);},1400);
+  ripple(.45,7);
 
-  var picks={};
-  document.querySelectorAll('.group').forEach(function(g){
-    g.querySelectorAll('.chip').forEach(function(c){
-      c.addEventListener('click',function(){
-        g.querySelectorAll('.chip').forEach(function(o){o.setAttribute('aria-pressed','false');});
-        c.setAttribute('aria-pressed','true');picks[g.dataset.key]=c.textContent.toLowerCase();
-      });
-    });
+  env.addEventListener('click',function(){
+    if(env.classList.contains('open'))return;
+    env.classList.add('open');env.setAttribute('aria-expanded','true');
+    bloom();
+    letter.classList.add('show');hint.textContent='Kéo xuống để đọc tiếp';
+    setTimeout(function(){letter.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});},1100);
   });
 
   var qs=[
@@ -227,12 +210,7 @@ footer{text-align:center;padding:30px 0 0;color:var(--soft);font-size:.9rem}
 
   var reply=document.getElementById('reply'),kind=document.getElementById('kind'),msg=document.getElementById('msg');
   document.getElementById('yes').addEventListener('click',function(){
-    var parts=[];
-    if(picks.drink)parts.push('uống '+picks.drink);
-    if(picks.vibe)parts.push(picks.vibe);
-    if(picks.time)parts.push(picks.time);
-    var t='Mình đã đọc thư của cậu rồi, cảm ơn cậu đã nói thật. Mình muốn gặp cậu.';
-    t+=parts.length?' Mình thấy ổn với: '+parts.join(', ')+'.':' Mình sẽ nhắn cậu thêm về địa điểm và giờ nhé.';
+    var t='Mình đã đọc thư của cậu rồi, cảm ơn cậu đã nói thật. Mình muốn gặp cậu, mình sẽ nhắn thêm về địa điểm và giờ nhé.';
     msg.value=t;kind.classList.remove('show');reply.classList.add('show');
     reply.scrollIntoView({behavior:'smooth',block:'nearest'});
   });
