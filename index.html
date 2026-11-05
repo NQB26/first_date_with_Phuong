@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gửi cậu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbf1f4; --bg2:#f4dfe8; --ink:#2b1b3d; --soft:#6d5a7d; --rose:#c93c68; --rose-ink:#fff;
+  --peach:#f6b08c; --card:#ffffff; --line:#e6c9d6; --glow:rgba(201,60,104,.14);
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#1a1124; --bg2:#271838; --ink:#f8e9ef; --soft:#c3a9cf; --rose:#ef7a9c; --rose-ink:#2b1030;
+    --peach:#f2a27c; --card:#2a1a3a; --line:#4a3160; --glow:rgba(239,122,156,.18);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#1a1124; --bg2:#271838; --ink:#f8e9ef; --soft:#c3a9cf; --rose:#ef7a9c; --rose-ink:#2b1030;
+  --peach:#f2a27c; --card:#2a1a3a; --line:#4a3160; --glow:rgba(239,122,156,.18);
+}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0; color:var(--ink); background:var(--bg);
+  background-image:radial-gradient(900px 500px at 50% -10%,var(--glow),transparent 70%);
+  font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.7; font-size:17px;
+}
+main{max-width:640px;margin:0 auto;padding:0 22px 80px}
+section{padding:56px 0 8px}
+h1,h2{font-family:"Playfair Display",Georgia,"Times New Roman",serif;line-height:1.2;margin:0 0 14px;font-weight:700}
+h1{font-size:clamp(2.4rem,9vw,3.6rem);font-weight:500;font-style:italic}
+h2{font-size:1.65rem}
+p{margin:0 0 14px}
+.muted{color:var(--soft)}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid var(--rose);outline-offset:3px}
+
+.hero{min-height:88vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-top:40px}
+.env{
+  margin-top:34px;width:230px;height:150px;position:relative;border:0;background:none;padding:0;
+}
+.env .body{position:absolute;inset:0;background:var(--card);border:1.5px solid var(--line);border-radius:6px;box-shadow:0 14px 30px var(--glow)}
+.env .flap{
+  position:absolute;left:0;right:0;top:0;height:78px;transform-origin:top;transition:transform .7s ease;
+  background:var(--bg2);border:1.5px solid var(--line);border-radius:6px 6px 0 0;
+  clip-path:polygon(0 0,100% 0,50% 100%);
+}
+.env .seal{
+  position:absolute;left:50%;top:62px;width:34px;height:34px;margin-left:-17px;border-radius:50%;
+  background:var(--rose);color:var(--rose-ink);display:grid;place-items:center;font-size:16px;z-index:2;transition:opacity .4s;
+}
+.env.open .flap{transform:rotateX(180deg)}
+.env.open .seal{opacity:0}
+.hint{margin-top:18px;font-size:.95rem}
+
+#letter{display:none}
+#letter.show{display:block}
+.paper{
+  background:var(--card);border:1.5px solid var(--line);border-radius:8px;padding:30px 26px;
+  box-shadow:0 14px 34px var(--glow);
+}
+.paper p{font-family:"Playfair Display",Georgia,serif;font-size:1.12rem;line-height:1.85}
+.paper .sig{text-align:right;margin:22px 0 0;font-style:italic}
+#letter.show .paper p{animation:rise .8s both}
+#letter.show .paper p:nth-child(2){animation-delay:.35s}
+#letter.show .paper p:nth-child(3){animation-delay:.7s}
+#letter.show .paper p:nth-child(4){animation-delay:1.05s}
+#letter.show .paper p:nth-child(5){animation-delay:1.4s}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.group{margin:20px 0}
+.group b{display:block;margin-bottom:8px;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  border:1.5px solid var(--line);background:var(--card);padding:9px 16px;border-radius:999px;
+}
+.chip[aria-pressed="true"]{background:var(--rose);border-color:var(--rose);color:var(--rose-ink);font-weight:500}
+
+.deck{
+  margin-top:10px;background:var(--card);border:1.5px dashed var(--line);border-radius:8px;
+  min-height:130px;padding:24px;display:grid;place-items:center;text-align:center;
+  font-family:"Playfair Display",Georgia,serif;font-size:1.25rem;line-height:1.5;
+}
+.btn{
+  border:0;background:var(--rose);color:var(--rose-ink);padding:13px 22px;border-radius:999px;font-weight:600;margin-top:14px;
+}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);margin-left:8px}
+.btn[disabled]{opacity:.5;cursor:default}
+
+#reply{display:none;margin-top:22px}
+#reply.show{display:block}
+textarea{
+  width:100%;min-height:120px;resize:vertical;font:inherit;padding:14px;border-radius:8px;
+  background:var(--card);color:var(--ink);border:1.5px solid var(--line);
+}
+#kind{display:none;margin-top:18px;padding:18px;border-radius:8px;background:var(--bg2)}
+#kind.show{display:block}
+footer{text-align:center;padding:30px 0 0;color:var(--soft);font-size:.9rem}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .env .flap,.env .seal{transition:none}
+  #letter.show .paper p{animation:none}
+}
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <h1>Gửi cậu</h1>
+    <p class="muted">Một lá thư nhỏ trước buổi gặp đầu tiên của mình.</p>
+    <button class="env" id="env" aria-label="Mở thư" aria-expanded="false">
+      <span class="body"></span><span class="flap"></span><span class="seal" aria-hidden="true">♥</span>
+    </button>
+    <p class="hint muted" id="hint">Chạm vào phong thư để mở</p>
+  </header>
+
+  <section id="letter" aria-label="Lá thư">
+    <div class="paper">
+      <p>Cậu à,</p>
+      <p>Mình làm trang này vì có vài điều nói trực tiếp thì mình sẽ lúng túng. Nên mình viết ra trước, để cậu đọc lúc nào thấy thoải mái.</p>
+      <p>Mình thích cậu. Thích cách cậu kể chuyện, thích những lúc cậu thoải mái chia sẻ với tớ. Mình không muốn đợi đến khi mọi thứ hoàn hảo mới nói.</p>
+      <p>Buổi gặp đầu tiên không cần là gì to tát. Một bộ phim và một vài phút giây tâm sự với nhau là đủ rồi. Nếu giữa chừng cậu thấy không thoải mái, cứ nói, mình sẽ hiểu.</p>
+      <p>Dù câu trả lời của cậu là gì, mình cũng cảm ơn vì đã đọc đến đây. Tớ chỉ muốn nói là "Mình thích cậu".</p>
+      <p class="sig">Haulee</p>
+    </div>
+  </section>
+
+  <section id="plan" aria-label="Chọn cho buổi gặp">
+    <h2>Mình gặp nhau thế nào cho dễ chịu?</h2>
+    <p class="muted">Chọn những gì cậu thấy ổn. Không có đáp án sai.</p>
+    <div class="group" data-key="drink">
+      <b>Cậu muốn uống gì?</b>
+      <div class="chips">
+        <button class="chip" aria-pressed="false">Cà phê</button>
+        <button class="chip" aria-pressed="false">Trà</button>
+        <button class="chip" aria-pressed="false">Nước ép</button>
+        <button class="chip" aria-pressed="false">Trà sữa</button>
+      </div>
+    </div>
+    <div class="group" data-key="vibe">
+      <b>Không khí nào hợp với cậu?</b>
+      <div class="chips">
+        <button class="chip" aria-pressed="false">Quán yên tĩnh</button>
+        <button class="chip" aria-pressed="false">Đi dạo ngoài trời</button>
+        <button class="chip" aria-pressed="false">Quán có nhạc nhẹ</button>
+      </div>
+    </div>
+    <div class="group" data-key="time">
+      <b>Khung giờ nào tiện?</b>
+      <div class="chips">
+        <button class="chip" aria-pressed="false">Chiều cuối tuần</button>
+        <button class="chip" aria-pressed="false">Tối cuối tuần</button>
+        <button class="chip" aria-pressed="false">Buổi tối trong tuần</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="ice" aria-label="Câu hỏi làm quen">
+    <h2>Nếu ngại im lặng</h2>
+    <p class="muted">Rút một câu hỏi. Ai trả lời trước cũng được, và được phép bỏ qua.</p>
+    <div class="deck" id="deck" aria-live="polite">Chạm nút bên dưới để rút thử</div>
+    <button class="btn" id="draw">Rút một câu hỏi</button>
+  </section>
+
+  <section id="answer" aria-label="Trả lời">
+    <h2>Cậu muốn gặp mình chứ?</h2>
+    <p class="muted">Cậu chọn xong thì mình sẽ có một tin nhắn sẵn để cậu gửi lại.</p>
+    <button class="btn" id="yes">Mình muốn gặp</button>
+    <button class="btn ghost" id="wait">Cho mình thêm thời gian</button>
+
+    <div id="reply">
+      <p><b>Tin nhắn cho người gửi thư:</b></p>
+      <textarea id="msg" readonly></textarea>
+      <button class="btn" id="copy">Sao chép tin nhắn</button>
+      <span class="muted" id="copied" role="status"></span>
+    </div>
+    <div id="kind" role="status">
+      <p>Không sao cả. Cậu cứ thong thả, mình không vội.</p>
+      <p style="margin:0">Khi nào cậu sẵn sàng, quay lại đây và chọn lại nhé.</p>
+    </div>
+  </section>
+
+  <footer>Làm bằng sự chân thành ♥</footer>
+</main>
+
+<script>
+(function(){
+  var env=document.getElementById('env'),letter=document.getElementById('letter'),hint=document.getElementById('hint');
+  env.addEventListener('click',function(){
+    env.classList.add('open');env.setAttribute('aria-expanded','true');
+    letter.classList.add('show');hint.textContent='Kéo xuống để đọc tiếp';
+    setTimeout(function(){letter.scrollIntoView({behavior:'smooth',block:'start'});},450);
+  });
+
+  var picks={};
+  document.querySelectorAll('.group').forEach(function(g){
+    g.querySelectorAll('.chip').forEach(function(c){
+      c.addEventListener('click',function(){
+        g.querySelectorAll('.chip').forEach(function(o){o.setAttribute('aria-pressed','false');});
+        c.setAttribute('aria-pressed','true');picks[g.dataset.key]=c.textContent.toLowerCase();
+      });
+    });
+  });
+
+  var qs=[
+    'Món ăn nào làm cậu thấy được an ủi nhất?',
+    'Nếu có một ngày rảnh hoàn toàn, cậu sẽ làm gì đầu tiên?',
+    'Bài hát nào cậu nghe đi nghe lại gần đây?',
+    'Nơi nào cậu từng đến mà muốn quay lại?',
+    'Điều nhỏ nào khiến cậu vui cả ngày?',
+    'Hồi nhỏ cậu muốn làm nghề gì khi lớn lên?',
+    'Cậu là người dậy sớm hay thức khuya?',
+    'Một thói quen kỳ cục của cậu mà ít người biết?',
+    'Bộ phim hay cuốn sách nào cậu muốn mọi người cùng xem?'
+  ],last=-1,deck=document.getElementById('deck');
+  document.getElementById('draw').addEventListener('click',function(){
+    var i;do{i=Math.floor(Math.random()*qs.length);}while(i===last);
+    last=i;deck.textContent=qs[i];
+  });
+
+  var reply=document.getElementById('reply'),kind=document.getElementById('kind'),msg=document.getElementById('msg');
+  document.getElementById('yes').addEventListener('click',function(){
+    var parts=[];
+    if(picks.drink)parts.push('uống '+picks.drink);
+    if(picks.vibe)parts.push(picks.vibe);
+    if(picks.time)parts.push(picks.time);
+    var t='Mình đã đọc thư của cậu rồi, cảm ơn cậu đã nói thật. Mình muốn gặp cậu.';
+    t+=parts.length?' Mình thấy ổn với: '+parts.join(', ')+'.':' Mình sẽ nhắn cậu thêm về địa điểm và giờ nhé.';
+    msg.value=t;kind.classList.remove('show');reply.classList.add('show');
+    reply.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+  document.getElementById('wait').addEventListener('click',function(){
+    reply.classList.remove('show');kind.classList.add('show');
+  });
+  document.getElementById('copy').addEventListener('click',function(){
+    var done=function(){document.getElementById('copied').textContent=' Đã sao chép';};
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(msg.value).then(done,function(){msg.select();document.execCommand('copy');done();});}
+      else{msg.select();document.execCommand('copy');done();}
+    }catch(e){msg.select();document.getElementById('copied').textContent=' Hãy chọn và sao chép thủ công';}
+  });
+})();
+</script>
+</body>
+</html>
